@@ -6789,7 +6789,9 @@ body.exporting #initiatives .initiatives-helper-text { display:none !important; 
 
 <style id="account-source-history-export-fix">
 /* Account export: preserve the complete ORIGINAL SOURCE STATUS / HISTORY without truncation. */
-.source-history-export{display:none}
+.source-history-export{display:table-cell}
+#accounts th.source-history-export,#accounts td.source-history-export{min-width:320px;width:420px;white-space:normal;vertical-align:top}
+#accounts .source-history-export-text{max-height:160px;overflow:auto;white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.45}
 body.exporting .source-history-export{display:table-cell!important}
 body.exporting th.source-history-export,body.exporting td.source-history-export{min-width:520px!important;width:520px!important;white-space:normal!important;vertical-align:top!important}
 body.exporting .source-history-export-text{white-space:pre-wrap!important;overflow:visible!important;text-overflow:clip!important;word-break:break-word!important;overflow-wrap:anywhere!important;display:block!important;max-height:none!important;height:auto!important;line-height:1.35!important;color:#1d2d3e!important}
@@ -6816,30 +6818,7 @@ body.member-view #kpiOverview button[onclick*="openKpiEditor"] {
   display:none!important;
 }
 
-/* ── 3. AI CUSTOMERS (ACCOUNTS) — hide add/edit ── */
-body.member-view #accounts button[onclick*="openNewAccountModal"],
-body.member-view #accountsBody .btn {
-  display:none!important;
-}
-body.member-view #accounts .table th:last-child,
-body.member-view #accounts .table td:last-child {
-  display:none!important;
-}
-/* Account edit modal: hide form fields + save button */
-body.member-view #accountModal .notice,
-body.member-view #accountModal .formgrid,
-body.member-view #accountModal button[onclick*="saveAccountUpdate"],
-body.member-view #accountModal .icon-delete,
-body.member-view #accountModal #eSourceHistory {
-  display:none!important;
-}
-body.member-view #accountModal .source-history-heading {
-  display:none!important;
-}
-/* Show the view-only banner in account modal */
-body.member-view #accountModal .account-ro-banner {
-  display:flex!important;
-}
+/* Accounts editing and source history are available to every signed-in team member. */
 
 /* ── 4. AI INITIATIVES — hide add/edit ── */
 body.member-view #initiatives .top button[onclick*="openInitiativeModal"],
@@ -7214,7 +7193,7 @@ window.__mgrPostComment=function(taskId){
 
 /* ══ INJECT READ-ONLY BANNERS INTO RESTRICTED SECTIONS ══ */
 function injectBanners(){
-  var sections=['dashboard','kpiOverview','accounts','initiatives','achievements'];
+  var sections=['dashboard','kpiOverview','initiatives','achievements'];
   sections.forEach(function(id){
     var el=document.getElementById(id);
     if(!el)return;
@@ -7227,15 +7206,7 @@ function injectBanners(){
       top.after(b);
     }
   });
-  /* Account modal view-only banner */
-  var acctModal=document.getElementById('accountModal');
-  if(acctModal&&!acctModal.querySelector('.account-ro-banner')){
-    var b2=document.createElement('div');
-    b2.className='account-ro-banner';
-    b2.innerHTML='<span style="font-size:14px">🔒</span> <span>View only — account editing is restricted to managers.</span>';
-    var hdr=acctModal.querySelector('.account-editor-header');
-    if(hdr)hdr.after(b2);else acctModal.insertAdjacentElement('afterbegin',b2);
-  }
+
 }
 
 /* ══ HOOKS ══ */
